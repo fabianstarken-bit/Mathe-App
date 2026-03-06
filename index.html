@@ -1,0 +1,1607 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>🧮 Mathe-Abenteuer</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Baloo+2:wght@700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary: #4f46e5;
+    --secondary: #06b6d4;
+    --accent: #f59e0b;
+    --green: #10b981;
+    --red: #ef4444;
+    --pink: #ec4899;
+    --purple: #8b5cf6;
+    --bg: #f0f4ff;
+    --card: #ffffff;
+    --text: #1e1b4b;
+    --muted: #6b7280;
+    --star1: #fbbf24;
+    --star2: #f97316;
+    --star3: #8b5cf6;
+  }
+
+- { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+font-family: ‘Nunito’, sans-serif;
+background: var(–bg);
+color: var(–text);
+min-height: 100vh;
+overflow-x: hidden;
+}
+
+/* HEADER */
+.app-header {
+background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
+padding: 20px 24px 16px;
+text-align: center;
+position: relative;
+overflow: hidden;
+}
+.app-header::before {
+content: ‘’;
+position: absolute;
+top: -40px; left: -40px; right: -40px;
+height: 120px;
+background: rgba(255,255,255,0.05);
+border-radius: 50%;
+transform: rotate(-3deg);
+}
+.app-header h1 {
+font-family: ‘Baloo 2’, cursive;
+font-size: 32px;
+color: white;
+text-shadow: 0 3px 10px rgba(0,0,0,0.2);
+position: relative;
+}
+.app-header p {
+color: rgba(255,255,255,0.85);
+font-size: 14px;
+margin-top: 4px;
+position: relative;
+}
+
+/* LEVEL SELECTOR */
+.level-bar {
+display: flex;
+gap: 8px;
+padding: 16px;
+background: white;
+border-bottom: 3px solid #e0e7ff;
+justify-content: center;
+flex-wrap: wrap;
+}
+.level-btn {
+display: flex;
+align-items: center;
+gap: 6px;
+padding: 10px 20px;
+border: 3px solid transparent;
+border-radius: 50px;
+font-family: ‘Nunito’, sans-serif;
+font-weight: 800;
+font-size: 15px;
+cursor: pointer;
+transition: all 0.25s;
+background: #f3f4f6;
+color: #6b7280;
+user-select: none;
+-webkit-tap-highlight-color: transparent;
+}
+.level-btn.l1 { background: #fef3c7; color: #92400e; border-color: #fcd34d; }
+.level-btn.l2 { background: #d1fae5; color: #065f46; border-color: #6ee7b7; }
+.level-btn.l3 { background: #ede9fe; color: #4c1d95; border-color: #a78bfa; }
+.level-btn.active {
+transform: scale(1.08);
+box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+}
+.level-btn.l1.active { background: #f59e0b; color: white; border-color: #d97706; }
+.level-btn.l2.active { background: #10b981; color: white; border-color: #059669; }
+.level-btn.l3.active { background: #8b5cf6; color: white; border-color: #7c3aed; }
+
+/* TOPIC TABS */
+.topic-tabs {
+display: flex;
+overflow-x: auto;
+padding: 12px 16px 0;
+gap: 8px;
+scrollbar-width: none;
+background: white;
+}
+.topic-tabs::-webkit-scrollbar { display: none; }
+.tab-btn {
+flex-shrink: 0;
+padding: 10px 18px;
+border-radius: 16px 16px 0 0;
+border: none;
+font-family: ‘Nunito’, sans-serif;
+font-weight: 800;
+font-size: 14px;
+cursor: pointer;
+transition: all 0.2s;
+background: #f3f4f6;
+color: #9ca3af;
+-webkit-tap-highlight-color: transparent;
+}
+.tab-btn.active {
+background: var(–bg);
+color: var(–primary);
+box-shadow: 0 -3px 0 var(–primary) inset;
+}
+
+/* MAIN CONTENT */
+.content {
+padding: 16px;
+max-width: 900px;
+margin: 0 auto;
+}
+
+/* RULE CARD */
+.rule-card {
+background: white;
+border-radius: 24px;
+padding: 24px;
+margin-bottom: 16px;
+box-shadow: 0 4px 20px rgba(79,70,229,0.08);
+border: 2px solid #e0e7ff;
+animation: slideIn 0.3s ease;
+}
+@keyframes slideIn {
+from { opacity: 0; transform: translateY(12px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+.rule-title {
+font-family: ‘Baloo 2’, cursive;
+font-size: 22px;
+color: var(–primary);
+margin-bottom: 8px;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.rule-emoji { font-size: 28px; }
+
+.rule-subtitle {
+font-size: 14px;
+color: var(–muted);
+margin-bottom: 16px;
+font-weight: 600;
+}
+
+/* VISUAL DEMO */
+.visual-demo {
+background: linear-gradient(135deg, #eff6ff, #f0fdf4);
+border-radius: 16px;
+padding: 20px;
+margin: 14px 0;
+border: 2px dashed #bfdbfe;
+text-align: center;
+}
+
+.demo-equation {
+font-family: ‘Baloo 2’, cursive;
+font-size: 26px;
+color: var(–text);
+margin: 8px 0;
+line-height: 1.4;
+}
+
+.demo-equation .highlight {
+background: #fef3c7;
+border-radius: 8px;
+padding: 2px 8px;
+color: #92400e;
+}
+.demo-equation .highlight2 {
+background: #d1fae5;
+border-radius: 8px;
+padding: 2px 8px;
+color: #065f46;
+}
+.demo-equation .highlight3 {
+background: #ede9fe;
+border-radius: 8px;
+padding: 2px 8px;
+color: #4c1d95;
+}
+
+.equals-line {
+display: flex;
+align-items: center;
+justify-content: center;
+gap: 12px;
+font-size: 20px;
+color: var(–muted);
+margin: 6px 0;
+}
+.equals-line::before,
+.equals-line::after {
+content: ‘’;
+height: 2px;
+width: 30px;
+background: #d1d5db;
+border-radius: 2px;
+}
+
+/* BLOCKS VISUAL */
+.blocks-row {
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 8px;
+flex-wrap: wrap;
+margin: 10px 0;
+}
+.block {
+width: 42px;
+height: 42px;
+border-radius: 10px;
+display: flex;
+align-items: center;
+justify-content: center;
+font-size: 18px;
+font-weight: 900;
+color: white;
+box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+transition: transform 0.2s;
+}
+.block:active { transform: scale(0.92); }
+.block.blue { background: linear-gradient(135deg, #4f46e5, #7c3aed); }
+.block.green { background: linear-gradient(135deg, #10b981, #059669); }
+.block.orange { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.block.pink { background: linear-gradient(135deg, #ec4899, #db2777); }
+.block.op {
+background: white;
+color: var(–text);
+border: 3px solid #e5e7eb;
+box-shadow: none;
+font-size: 24px;
+}
+
+/* MEMORY BOX */
+.memory-box {
+background: linear-gradient(135deg, #fef3c7, #fde68a);
+border: 3px solid #f59e0b;
+border-radius: 16px;
+padding: 16px 20px;
+margin: 14px 0;
+display: flex;
+gap: 14px;
+align-items: flex-start;
+}
+.memory-icon { font-size: 32px; flex-shrink: 0; }
+.memory-text { font-size: 15px; font-weight: 700; color: #78350f; line-height: 1.5; }
+.memory-text strong { font-size: 16px; display: block; margin-bottom: 4px; }
+
+/* EXERCISE SECTION */
+.exercise-section {
+margin-top: 4px;
+}
+.exercise-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 14px;
+}
+.exercise-title {
+font-family: ‘Baloo 2’, cursive;
+font-size: 20px;
+color: var(–primary);
+}
+.score-badge {
+background: linear-gradient(135deg, #4f46e5, #7c3aed);
+color: white;
+padding: 6px 16px;
+border-radius: 50px;
+font-weight: 800;
+font-size: 14px;
+}
+
+/* EXERCISE CARD */
+.exercise-card {
+background: white;
+border-radius: 20px;
+padding: 22px;
+margin-bottom: 14px;
+box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+border: 2px solid #e0e7ff;
+transition: all 0.25s;
+}
+.exercise-card.correct {
+border-color: #6ee7b7;
+background: #f0fdf4;
+box-shadow: 0 0 0 3px #6ee7b7;
+}
+.exercise-card.wrong {
+border-color: #fca5a5;
+background: #fff5f5;
+box-shadow: 0 0 0 3px #fca5a5;
+}
+
+.exercise-q {
+font-size: 18px;
+font-weight: 800;
+color: var(–text);
+margin-bottom: 14px;
+line-height: 1.4;
+}
+.exercise-q .blank {
+display: inline-block;
+min-width: 50px;
+height: 34px;
+background: #f3f4f6;
+border: 3px solid #d1d5db;
+border-radius: 10px;
+vertical-align: middle;
+text-align: center;
+line-height: 28px;
+font-size: 18px;
+padding: 0 8px;
+}
+
+/* ANSWER OPTIONS */
+.options-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 10px;
+}
+.option-btn {
+padding: 14px 10px;
+border: 3px solid #e5e7eb;
+border-radius: 14px;
+background: white;
+font-family: ‘Nunito’, sans-serif;
+font-weight: 800;
+font-size: 18px;
+cursor: pointer;
+transition: all 0.2s;
+color: var(–text);
+-webkit-tap-highlight-color: transparent;
+user-select: none;
+}
+.option-btn:active { transform: scale(0.95); }
+.option-btn.selected-correct {
+background: #10b981;
+border-color: #059669;
+color: white;
+transform: scale(1.04);
+}
+.option-btn.selected-wrong {
+background: #ef4444;
+border-color: #dc2626;
+color: white;
+}
+.option-btn.show-correct {
+background: #d1fae5;
+border-color: #6ee7b7;
+color: #065f46;
+}
+.option-btn:disabled {
+cursor: default;
+}
+
+/* NUMBER INPUT */
+.number-input-row {
+display: flex;
+gap: 10px;
+align-items: center;
+}
+.num-input {
+flex: 1;
+padding: 14px;
+border: 3px solid #d1d5db;
+border-radius: 14px;
+font-family: ‘Nunito’, sans-serif;
+font-weight: 800;
+font-size: 22px;
+text-align: center;
+color: var(–text);
+outline: none;
+transition: all 0.2s;
+background: #f9fafb;
+-webkit-appearance: none;
+}
+.num-input:focus { border-color: var(–primary); background: white; }
+.check-btn {
+padding: 14px 20px;
+background: linear-gradient(135deg, #4f46e5, #7c3aed);
+color: white;
+border: none;
+border-radius: 14px;
+font-family: ‘Nunito’, sans-serif;
+font-weight: 800;
+font-size: 16px;
+cursor: pointer;
+transition: all 0.2s;
+-webkit-tap-highlight-color: transparent;
+}
+.check-btn:active { transform: scale(0.95); }
+
+/* FEEDBACK */
+.feedback {
+margin-top: 12px;
+padding: 12px 16px;
+border-radius: 12px;
+font-weight: 700;
+font-size: 15px;
+display: none;
+align-items: center;
+gap: 8px;
+}
+.feedback.show { display: flex; }
+.feedback.correct-fb { background: #d1fae5; color: #065f46; }
+.feedback.wrong-fb { background: #fee2e2; color: #991b1b; }
+
+/* DRAG AND DROP */
+.drag-area {
+display: flex;
+gap: 8px;
+justify-content: center;
+flex-wrap: wrap;
+margin: 12px 0;
+}
+.drag-item {
+padding: 10px 18px;
+background: linear-gradient(135deg, #4f46e5, #7c3aed);
+color: white;
+border-radius: 12px;
+font-weight: 800;
+font-size: 18px;
+cursor: grab;
+user-select: none;
+-webkit-tap-highlight-color: transparent;
+transition: all 0.2s;
+touch-action: none;
+}
+.drag-item:active { transform: scale(1.08); opacity: 0.9; }
+
+.drop-zone {
+min-width: 60px;
+min-height: 44px;
+border: 3px dashed #a5b4fc;
+border-radius: 12px;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+background: #f0f4ff;
+font-weight: 800;
+font-size: 18px;
+color: #a5b4fc;
+padding: 6px 12px;
+vertical-align: middle;
+transition: all 0.2s;
+}
+.drop-zone.filled {
+background: #e0e7ff;
+border-color: #4f46e5;
+color: #1e1b4b;
+}
+.drop-zone.drag-over {
+background: #c7d2fe;
+border-color: #4f46e5;
+transform: scale(1.05);
+}
+
+/* PROGRESS BAR */
+.progress-section {
+background: white;
+border-radius: 16px;
+padding: 14px 18px;
+margin-bottom: 16px;
+border: 2px solid #e0e7ff;
+}
+.progress-label {
+font-weight: 700;
+font-size: 13px;
+color: var(–muted);
+margin-bottom: 8px;
+display: flex;
+justify-content: space-between;
+}
+.progress-bar {
+height: 14px;
+background: #e0e7ff;
+border-radius: 50px;
+overflow: hidden;
+}
+.progress-fill {
+height: 100%;
+background: linear-gradient(90deg, #4f46e5, #ec4899);
+border-radius: 50px;
+transition: width 0.5s ease;
+}
+
+/* STARS */
+.stars-display {
+display: flex;
+gap: 4px;
+font-size: 24px;
+}
+
+/* SECTION SEPARATOR */
+.section-sep {
+display: flex;
+align-items: center;
+gap: 12px;
+margin: 20px 0 16px;
+}
+.section-sep span {
+font-family: ‘Baloo 2’, cursive;
+font-size: 18px;
+color: var(–primary);
+white-space: nowrap;
+}
+.section-sep::before, .section-sep::after {
+content: ‘’;
+flex: 1;
+height: 2px;
+background: #e0e7ff;
+border-radius: 2px;
+}
+
+/* NEXT BUTTON */
+.next-btn {
+display: block;
+width: 100%;
+padding: 16px;
+background: linear-gradient(135deg, #f59e0b, #ef4444);
+color: white;
+border: none;
+border-radius: 16px;
+font-family: ‘Baloo 2’, cursive;
+font-size: 20px;
+cursor: pointer;
+margin-top: 12px;
+transition: all 0.2s;
+-webkit-tap-highlight-color: transparent;
+box-shadow: 0 4px 15px rgba(245,158,11,0.3);
+}
+.next-btn:active { transform: scale(0.97); }
+
+/* CELEBRATION */
+.celebration {
+display: none;
+position: fixed;
+top: 0; left: 0; right: 0; bottom: 0;
+background: rgba(79,70,229,0.85);
+z-index: 100;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+animation: fadeIn 0.3s ease;
+padding: 30px;
+}
+.celebration.show { display: flex; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.celebration-box {
+background: white;
+border-radius: 30px;
+padding: 36px 28px;
+text-align: center;
+max-width: 380px;
+width: 100%;
+animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes popIn {
+from { transform: scale(0.6); opacity: 0; }
+to { transform: scale(1); opacity: 1; }
+}
+.celebration-emoji { font-size: 72px; display: block; margin-bottom: 12px; }
+.celebration-title { font-family: ‘Baloo 2’, cursive; font-size: 30px; color: var(–primary); }
+.celebration-msg { font-size: 16px; color: var(–muted); margin: 10px 0 24px; }
+.celebration-stars { font-size: 48px; margin: 10px 0; }
+.close-celebration {
+padding: 14px 32px;
+background: linear-gradient(135deg, #4f46e5, #7c3aed);
+color: white;
+border: none;
+border-radius: 50px;
+font-family: ‘Nunito’, sans-serif;
+font-weight: 800;
+font-size: 18px;
+cursor: pointer;
+-webkit-tap-highlight-color: transparent;
+}
+
+/* CONFETTI CANVAS */
+#confetti-canvas {
+position: fixed;
+top: 0; left: 0;
+width: 100%; height: 100%;
+pointer-events: none;
+z-index: 101;
+}
+
+/* HIDDEN */
+.hidden { display: none !important; }
+
+/* FORMULA BOX */
+.formula-box {
+background: linear-gradient(135deg, #1e1b4b, #312e81);
+border-radius: 16px;
+padding: 18px;
+text-align: center;
+margin: 14px 0;
+}
+.formula-text {
+font-family: ‘Baloo 2’, cursive;
+font-size: 22px;
+color: white;
+line-height: 1.6;
+}
+.formula-label {
+font-size: 12px;
+color: #a5b4fc;
+font-weight: 700;
+text-transform: uppercase;
+letter-spacing: 1px;
+margin-bottom: 6px;
+}
+
+/* TAP DEMO */
+.tap-demo {
+background: #f0f4ff;
+border-radius: 14px;
+padding: 16px;
+text-align: center;
+cursor: pointer;
+border: 2px solid #c7d2fe;
+transition: all 0.2s;
+-webkit-tap-highlight-color: transparent;
+user-select: none;
+}
+.tap-demo:active { transform: scale(0.97); }
+.tap-demo p { font-size: 13px; color: var(–muted); margin-top: 8px; }
+
+/* ORDER PRIORITY VISUAL */
+.priority-visual {
+display: flex;
+flex-direction: column;
+gap: 8px;
+margin: 14px 0;
+}
+.priority-row {
+display: flex;
+align-items: center;
+gap: 12px;
+background: white;
+border-radius: 14px;
+padding: 14px 16px;
+border: 2px solid #e0e7ff;
+}
+.priority-num {
+width: 36px;
+height: 36px;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-weight: 900;
+font-size: 18px;
+color: white;
+flex-shrink: 0;
+}
+.priority-num.p1 { background: linear-gradient(135deg, #ec4899, #db2777); }
+.priority-num.p2 { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.priority-num.p3 { background: linear-gradient(135deg, #10b981, #059669); }
+.priority-info h4 { font-weight: 800; font-size: 16px; }
+.priority-info p { font-size: 13px; color: var(–muted); font-weight: 600; }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* Overflow equation scroller */
+.eq-scroll {
+overflow-x: auto;
+padding-bottom: 4px;
+-webkit-overflow-scrolling: touch;
+}
+.eq-inner { min-width: max-content; }
+
+/* Big number display for calc steps */
+.calc-step {
+background: #f8fafc;
+border-radius: 12px;
+padding: 12px 16px;
+margin: 8px 0;
+border-left: 5px solid var(–primary);
+font-size: 16px;
+font-weight: 700;
+}
+.calc-step .step-num {
+font-size: 12px;
+font-weight: 800;
+text-transform: uppercase;
+letter-spacing: 1px;
+color: var(–primary);
+margin-bottom: 4px;
+}
+</style>
+
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<header class="app-header">
+  <h1>🧮 Mathe-Gesetze</h1>
+  <p>Klassen-Wiederholung · Interaktiv · iPad</p>
+</header>
+
+<!-- LEVEL SELECTOR -->
+
+<div class="level-bar">
+  <button class="level-btn l1 active" onclick="setLevel(1)">⭐ Starter</button>
+  <button class="level-btn l2" onclick="setLevel(2)">⭐⭐ Fortgeschritten</button>
+  <button class="level-btn l3" onclick="setLevel(3)">⭐⭐⭐ Profi</button>
+</div>
+
+<!-- TOPIC TABS -->
+
+<div class="topic-tabs">
+  <button class="tab-btn active" onclick="showTab('kommutativ')">🔄 Kommutativ</button>
+  <button class="tab-btn" onclick="showTab('assoziativ')">🔗 Assoziativ</button>
+  <button class="tab-btn" onclick="showTab('distributiv')">📦 Distributiv</button>
+  <button class="tab-btn" onclick="showTab('vorrang')">🚦 Vorrang</button>
+  <button class="tab-btn" onclick="showTab('mix')">🎲 Mix-Quiz</button>
+</div>
+
+<div class="content">
+
+<!-- ======================== KOMMUTATIV ======================== -->
+
+<div id="tab-kommutativ" class="tab-content active">
+
+  <div class="rule-card">
+    <div class="rule-title"><span class="rule-emoji">🔄</span> Kommutativgesetz</div>
+    <div class="rule-subtitle">„Ich darf die Zahlen vertauschen – das Ergebnis bleibt gleich!"</div>
+
+```
+<div class="visual-demo" onclick="animateKommutativ()" style="cursor:pointer;">
+  <div class="blocks-row" id="komm-blocks">
+    <div class="block blue">3</div>
+    <div class="block op">+</div>
+    <div class="block orange">5</div>
+    <div class="block op">=</div>
+    <div class="block green">8</div>
+  </div>
+  <div class="equals-line">↕️ vertauschen</div>
+  <div class="blocks-row">
+    <div class="block orange">5</div>
+    <div class="block op">+</div>
+    <div class="block blue">3</div>
+    <div class="block op">=</div>
+    <div class="block green">8</div>
+  </div>
+  <p style="font-size:13px;color:var(--muted);margin-top:10px;">👆 Tippe zum Animieren!</p>
+</div>
+
+<div class="formula-box">
+  <div class="formula-label">Formel</div>
+  <div class="formula-text">
+    <span style="color:#fbbf24">a</span> + <span style="color:#34d399">b</span> = <span style="color:#34d399">b</span> + <span style="color:#fbbf24">a</span><br>
+    <span style="color:#fbbf24">a</span> × <span style="color:#34d399">b</span> = <span style="color:#34d399">b</span> × <span style="color:#fbbf24">a</span>
+  </div>
+</div>
+
+<div class="memory-box">
+  <span class="memory-icon">🐟</span>
+  <div class="memory-text">
+    <strong>Merkhilfe: Das Fische-Gesetz</strong>
+    Stell dir vor, du hast 3 rote und 5 blaue Fische im Aquarium. Ob du zuerst die roten oder zuerst die blauen zählst – am Ende sind es immer 8 Fische! 🐠🐟
+  </div>
+</div>
+
+<div class="memory-box" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);border-color:#8b5cf6;">
+  <span class="memory-icon">⚠️</span>
+  <div class="memory-text" style="color:#4c1d95;">
+    <strong>Achtung!</strong>
+    Das gilt NICHT bei Subtraktion und Division!<br>
+    8 − 3 ≠ 3 − 8 ❌ &nbsp;&nbsp;&nbsp; 8 ÷ 2 ≠ 2 ÷ 8 ❌
+  </div>
+</div>
+```
+
+  </div>
+
+  <!-- EXERCISES -->
+
+  <div class="progress-section">
+    <div class="progress-label">
+      <span>Fortschritt Kommutativ</span>
+      <span id="komm-prog-text">0 / 5</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="komm-progress" style="width:0%"></div></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header">
+      <div class="exercise-title">🎯 Übungen</div>
+      <div class="score-badge">Punkte: <span id="komm-score">0</span></div>
+    </div>
+    <div id="komm-exercises"></div>
+  </div>
+
+</div>
+
+<!-- ======================== ASSOZIATIV ======================== -->
+
+<div id="tab-assoziativ" class="tab-content">
+
+  <div class="rule-card">
+    <div class="rule-title"><span class="rule-emoji">🔗</span> Assoziativgesetz</div>
+    <div class="rule-subtitle">„Ich darf die Klammern verschieben – das Ergebnis ändert sich nicht!"</div>
+
+```
+<div class="visual-demo">
+  <div class="demo-equation">
+    (<span class="highlight">2 + 3</span>) + 4 = 5 + 4 = <strong>9</strong>
+  </div>
+  <div class="equals-line">genau gleich</div>
+  <div class="demo-equation">
+    2 + (<span class="highlight2">3 + 4</span>) = 2 + 7 = <strong>9</strong>
+  </div>
+</div>
+
+<div class="formula-box">
+  <div class="formula-label">Formel</div>
+  <div class="formula-text">
+    (<span style="color:#fbbf24">a</span> + <span style="color:#34d399">b</span>) + <span style="color:#f472b6">c</span> = <span style="color:#fbbf24">a</span> + (<span style="color:#34d399">b</span> + <span style="color:#f472b6">c</span>)<br>
+    (<span style="color:#fbbf24">a</span> × <span style="color:#34d399">b</span>) × <span style="color:#f472b6">c</span> = <span style="color:#fbbf24">a</span> × (<span style="color:#34d399">b</span> × <span style="color:#f472b6">c</span>)
+  </div>
+</div>
+
+<div class="memory-box">
+  <span class="memory-icon">👥</span>
+  <div class="memory-text">
+    <strong>Merkhilfe: Die Gruppenreise</strong>
+    3 Freunde fahren zuerst hin, dann kommen 4 dazu, und dann noch 2. Egal ob (3+4)+2 oder 3+(4+2) – es sind immer 9 Freunde auf der Reise! 🚌
+  </div>
+</div>
+
+<div class="memory-box" style="background:linear-gradient(135deg,#ede9fe,#ddd6fe);border-color:#8b5cf6;">
+  <span class="memory-icon">⚠️</span>
+  <div class="memory-text" style="color:#4c1d95;">
+    <strong>Achtung!</strong>
+    Auch das gilt NICHT bei Subtraktion und Division!<br>
+    (8 − 3) − 1 ≠ 8 − (3 − 1) ❌
+  </div>
+</div>
+```
+
+  </div>
+
+  <div class="progress-section">
+    <div class="progress-label">
+      <span>Fortschritt Assoziativ</span>
+      <span id="assoz-prog-text">0 / 5</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="assoz-progress" style="width:0%"></div></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header">
+      <div class="exercise-title">🎯 Übungen</div>
+      <div class="score-badge">Punkte: <span id="assoz-score">0</span></div>
+    </div>
+    <div id="assoz-exercises"></div>
+  </div>
+
+</div>
+
+<!-- ======================== DISTRIBUTIV ======================== -->
+
+<div id="tab-distributiv" class="tab-content">
+
+  <div class="rule-card">
+    <div class="rule-title"><span class="rule-emoji">📦</span> Distributivgesetz</div>
+    <div class="rule-subtitle">„Ich darf die Klammer aufmachen – und mit jedem Term multiplizieren!"</div>
+
+```
+<div class="visual-demo">
+  <div style="font-size:14px;font-weight:800;color:var(--muted);margin-bottom:6px;">3 Säcke mit je (4 Äpfel + 2 Orangen)</div>
+  <div class="demo-equation">
+    3 × (<span class="highlight">4 + 2</span>)
+  </div>
+  <div class="equals-line">ausmultiplizieren</div>
+  <div class="demo-equation">
+    <span class="highlight2">3 × 4</span> + <span class="highlight3">3 × 2</span>
+  </div>
+  <div class="equals-line">berechnen</div>
+  <div class="demo-equation">
+    <strong>12 + 6 = 18 ✓</strong>
+  </div>
+</div>
+
+<div class="tap-demo" id="dist-visual-demo" onclick="toggleDistDemo()">
+  <div id="dist-demo-1">
+    <div class="blocks-row">
+      <div class="block pink">📦</div>
+      <div class="block pink">📦</div>
+      <div class="block pink">📦</div>
+    </div>
+    <div style="font-size:14px;font-weight:700;margin-top:6px;">Jeder Sack hat: 🍎🍎🍎🍎 + 🍊🍊</div>
+    <div class="demo-equation" style="font-size:20px;">3 × (4 + 2) = ?</div>
+  </div>
+  <p>👆 Tippe für die Lösung!</p>
+</div>
+
+<div class="formula-box">
+  <div class="formula-label">Formel</div>
+  <div class="formula-text">
+    <span style="color:#fbbf24">a</span> × (<span style="color:#34d399">b</span> + <span style="color:#f472b6">c</span>) = <span style="color:#fbbf24">a</span> × <span style="color:#34d399">b</span> + <span style="color:#fbbf24">a</span> × <span style="color:#f472b6">c</span>
+  </div>
+</div>
+
+<div class="memory-box">
+  <span class="memory-icon">🎒</span>
+  <div class="memory-text">
+    <strong>Merkhilfe: Die Rucksack-Regel</strong>
+    Stell dir vor: 4 Kinder haben je einen Rucksack mit 3 Büchern und 2 Mäppchen. Du kannst entweder alle Rucksäcke öffnen (4×5) oder erst alle Bücher zählen (4×3) und dann alle Mäppchen (4×2). Ergebnis: gleich! 📚
+  </div>
+</div>
+```
+
+  </div>
+
+  <div class="progress-section">
+    <div class="progress-label">
+      <span>Fortschritt Distributiv</span>
+      <span id="dist-prog-text">0 / 5</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="dist-progress" style="width:0%"></div></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header">
+      <div class="exercise-title">🎯 Übungen</div>
+      <div class="score-badge">Punkte: <span id="dist-score">0</span></div>
+    </div>
+    <div id="dist-exercises"></div>
+  </div>
+
+</div>
+
+<!-- ======================== VORRANG ======================== -->
+
+<div id="tab-vorrang" class="tab-content">
+
+  <div class="rule-card">
+    <div class="rule-title"><span class="rule-emoji">🚦</span> Reihenfolge beim Rechnen</div>
+    <div class="rule-subtitle">Wer darf zuerst? Die Regeln der Vorrangs!</div>
+
+```
+<div class="priority-visual">
+  <div class="priority-row">
+    <div class="priority-num p1">1</div>
+    <div class="priority-info">
+      <h4>🔴 Klammern zuerst!</h4>
+      <p>Was in () steht, wird IMMER zuerst berechnet</p>
+    </div>
+  </div>
+  <div style="text-align:center;font-size:22px;color:#d1d5db;">↓</div>
+  <div class="priority-row">
+    <div class="priority-num p2">2</div>
+    <div class="priority-info">
+      <h4>🟡 Punkt vor Strich!</h4>
+      <p>× und ÷ kommen vor + und −</p>
+    </div>
+  </div>
+  <div style="text-align:center;font-size:22px;color:#d1d5db;">↓</div>
+  <div class="priority-row">
+    <div class="priority-num p3">3</div>
+    <div class="priority-info">
+      <h4>🟢 Von links nach rechts</h4>
+      <p>Gleich starke Operationen von links nach rechts</p>
+    </div>
+  </div>
+</div>
+
+<div class="visual-demo">
+  <div style="font-size:14px;font-weight:800;color:var(--muted);margin-bottom:8px;">Schritt-für-Schritt Beispiel:</div>
+  <div class="calc-step">
+    <div class="step-num">Start</div>
+    2 + 3 × (4 − 1)
+  </div>
+  <div class="calc-step" style="border-color:#ec4899;">
+    <div class="step-num" style="color:#ec4899;">🔴 Schritt 1: Klammer</div>
+    2 + 3 × <strong style="color:#ec4899;">3</strong>
+  </div>
+  <div class="calc-step" style="border-color:#f59e0b;">
+    <div class="step-num" style="color:#f59e0b;">🟡 Schritt 2: Punkt</div>
+    2 + <strong style="color:#f59e0b;">9</strong>
+  </div>
+  <div class="calc-step" style="border-color:#10b981;">
+    <div class="step-num" style="color:#10b981;">🟢 Schritt 3: Strich</div>
+    <strong style="color:#10b981;">= 11 ✓</strong>
+  </div>
+</div>
+
+<div class="memory-box">
+  <span class="memory-icon">🚦</span>
+  <div class="memory-text">
+    <strong>Merkhilfe: Das Ampel-System</strong>
+    ROT = Stop! Klammern zuerst rechnen.<br>
+    GELB = Achtung! Punkt vor Strich (× und ÷)<br>
+    GRÜN = Los! Addition und Subtraktion
+  </div>
+</div>
+```
+
+  </div>
+
+  <div class="progress-section">
+    <div class="progress-label">
+      <span>Fortschritt Vorrang</span>
+      <span id="vor-prog-text">0 / 5</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="vor-progress" style="width:0%"></div></div>
+  </div>
+
+  <div class="exercise-section">
+    <div class="exercise-header">
+      <div class="exercise-title">🎯 Übungen</div>
+      <div class="score-badge">Punkte: <span id="vor-score">0</span></div>
+    </div>
+    <div id="vor-exercises"></div>
+  </div>
+
+</div>
+
+<!-- ======================== MIX QUIZ ======================== -->
+
+<div id="tab-mix" class="tab-content">
+  <div class="rule-card">
+    <div class="rule-title"><span class="rule-emoji">🎲</span> Mix-Quiz</div>
+    <div class="rule-subtitle">Alle Gesetze gemischt – bist du bereit?</div>
+    <div id="mix-quiz-area"></div>
+    <button class="next-btn" onclick="generateMixQuiz()" style="margin-top:16px;">🎲 Neue Fragen!</button>
+  </div>
+  <div class="progress-section">
+    <div class="progress-label">
+      <span>Mix-Punkte</span>
+      <span id="mix-prog-text">0 / 6</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="mix-progress" style="width:0%"></div></div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<!-- CELEBRATION MODAL -->
+
+<div class="celebration" id="celebration">
+  <div class="celebration-box">
+    <span class="celebration-emoji" id="celeb-emoji">🎉</span>
+    <div class="celebration-title" id="celeb-title">Super gemacht!</div>
+    <div class="celebration-stars" id="celeb-stars">⭐⭐⭐</div>
+    <div class="celebration-msg" id="celeb-msg">Du hast alle Aufgaben richtig gelöst!</div>
+    <button class="close-celebration" onclick="closeCelebration()">Weiter üben! 🚀</button>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// STATE
+// ============================================================
+let currentLevel = 1;
+let scores = { komm: 0, assoz: 0, dist: 0, vor: 0, mix: 0 };
+let progress = { komm: 0, assoz: 0, dist: 0, vor: 0, mix: 0 };
+let distDemoToggled = false;
+
+// ============================================================
+// EXERCISE BANKS
+// ============================================================
+
+const exercises = {
+  kommutativ: {
+    1: [
+      { type: 'choice', q: '3 + 7 = 7 + __', answer: '3', options: ['3', '7', '10', '4'] },
+      { type: 'choice', q: '__ + 4 = 4 + 6', answer: '6', options: ['4', '6', '2', '10'] },
+      { type: 'choice', q: 'Welche Gleichung stimmt?', answer: '5 × 2 = 2 × 5', options: ['5 × 2 = 2 × 5', '8 − 3 = 3 − 8', '10 ÷ 2 = 2 ÷ 10', '5 + 0 = 0'] },
+      { type: 'number', q: '9 + 6 = 6 + ?', answer: 9 },
+      { type: 'choice', q: 'Nutzt diesen Ausdruck das Kommutativgesetz?\n4 × 3 = 3 × 4', answer: 'Ja, weil × vertauschbar ist', options: ['Ja, weil × vertauschbar ist', 'Nein, es fehlt das Ergebnis', 'Ja, aber nur bei gleichen Zahlen', 'Nein, nur + ist vertauschbar'] },
+    ],
+    2: [
+      { type: 'number', q: '34 + 56 = 56 + ?', answer: 34 },
+      { type: 'choice', q: 'Welche Aussage ist FALSCH?', answer: '12 − 5 = 5 − 12', options: ['12 − 5 = 5 − 12', '7 + 8 = 8 + 7', '3 × 9 = 9 × 3', '0 + 15 = 15 + 0'] },
+      { type: 'number', q: '17 × 5 = 5 × ?', answer: 17 },
+      { type: 'choice', q: 'Kannst du umformen?\n28 + 45 = ?', answer: '45 + 28', options: ['45 + 28', '45 − 28', '28 × 45', '28 − 45'] },
+      { type: 'number', q: 'a + b = b + __, wenn a = 13', answer: 13 },
+    ],
+    3: [
+      { type: 'choice', q: 'Für welche Operation gilt das Kommutativgesetz NICHT?', answer: 'Subtraktion', options: ['Addition', 'Multiplikation', 'Subtraktion', 'Es gilt immer'] },
+      { type: 'number', q: '(a + b) = (b + a). Wenn a = 25 und b = 37, was ist a + b?', answer: 62 },
+      { type: 'choice', q: 'Vereinfache: 99 + 1 (nutze Kommutativgesetz klug!)', answer: '1 + 99 = 100', options: ['1 + 99 = 100', '99 + 1 bleibt so', '9 + 91', '100 − 0'] },
+      { type: 'number', q: '456 × 1 = 1 × ?', answer: 456 },
+      { type: 'choice', q: 'Stimmt: 0,5 × 8 = 8 × 0,5?', answer: 'Ja – Kommutativgesetz gilt auch bei Dezimalzahlen', options: ['Ja – Kommutativgesetz gilt auch bei Dezimalzahlen', 'Nein – nur bei ganzen Zahlen', 'Nein – 0,5 ist keine richtige Zahl', 'Vielleicht'] },
+    ]
+  },
+  assoziativ: {
+    1: [
+      { type: 'choice', q: '(2 + 3) + 4 = 2 + (3 + ?)', answer: '4', options: ['4', '3', '2', '9'] },
+      { type: 'number', q: '(5 + 4) + 6 = 5 + (? + 6)', answer: 4 },
+      { type: 'choice', q: 'Was ergibt (2 × 3) × 4?', answer: '24', options: ['24', '14', '20', '18'] },
+      { type: 'number', q: '(1 + 2) + 7 = ?', answer: 10 },
+      { type: 'choice', q: 'Welche Gleichung zeigt das Assoziativgesetz?', answer: '(3 + 4) + 5 = 3 + (4 + 5)', options: ['(3 + 4) + 5 = 3 + (4 + 5)', '3 + 4 = 4 + 3', '3 × (4 + 5) = 3×4 + 3×5', '3 + 4 = 7'] },
+    ],
+    2: [
+      { type: 'number', q: '(12 + 8) + 5 = 12 + (8 + ?)', answer: 5 },
+      { type: 'number', q: 'Berechne: 2 × (5 × 6) = ?', answer: 60 },
+      { type: 'choice', q: 'Was bedeutet Assoziativgesetz?', answer: 'Klammern verschieben ändert nichts', options: ['Klammern verschieben ändert nichts', 'Zahlen vertauschen ändert nichts', 'Klammern auflösen', 'Terme zusammenfassen'] },
+      { type: 'number', q: '(25 + 13) + 7 = ?', answer: 45 },
+      { type: 'choice', q: 'Gilt (10 − 3) − 2 = 10 − (3 − 2)?', answer: 'Nein! 5 ≠ 9', options: ['Ja, immer!', 'Nein! 5 ≠ 9', 'Ja, bei Subtraktion auch', 'Nein, weil 10 zu groß'] },
+    ],
+    3: [
+      { type: 'number', q: '(4 × 25) × 4 = ? (nutze Assoziativgesetz)', answer: 400 },
+      { type: 'choice', q: 'Welche Umformung ist korrekt?', answer: '(a + b) + c = a + (b + c)', options: ['(a + b) + c = a + (b + c)', '(a − b) − c = a − (b − c)', 'a × (b + c) = a×b + a×c', '(a ÷ b) ÷ c = a ÷ (b ÷ c)'] },
+      { type: 'number', q: 'Vereinfache clever: 17 + (3 + 29) = ?', answer: 49 },
+      { type: 'choice', q: 'Warum gilt (6 ÷ 3) ÷ 1 ≠ 6 ÷ (3 ÷ 1)?', answer: '2 ÷ 1 = 2, aber 6 ÷ 3 = 2 – hier stimmt es zufällig, aber nicht immer!', options: ['2 ÷ 1 = 2, aber 6 ÷ 3 = 2 – hier stimmt es zufällig, aber nicht immer!', 'Weil Division nie assoziativ ist', 'Es gilt doch!', 'Weil 6 eine gerade Zahl ist'] },
+      { type: 'number', q: '(2 × 5) × (3 × 10) = ?', answer: 300 },
+    ]
+  },
+  distributiv: {
+    1: [
+      { type: 'number', q: '2 × (3 + 4) = 2 × 3 + 2 × ?', answer: 4 },
+      { type: 'number', q: '3 × (2 + 5) = ?', answer: 21 },
+      { type: 'choice', q: 'Was ergibt 4 × (1 + 3)?', answer: '16', options: ['16', '7', '12', '8'] },
+      { type: 'number', q: '5 × (2 + 1) = 5 × 2 + 5 × ?', answer: 1 },
+      { type: 'choice', q: 'Welche Gleichung zeigt das Distributivgesetz?', answer: '3 × (4 + 2) = 3×4 + 3×2', options: ['3 × (4 + 2) = 3×4 + 3×2', '(3 + 4) + 2 = 3 + (4 + 2)', '3 + 4 = 4 + 3', '3 × 4 = 4 × 3'] },
+    ],
+    2: [
+      { type: 'number', q: '6 × (10 + 3) = ?', answer: 78 },
+      { type: 'number', q: '4 × 13 = 4 × (10 + 3) = 4×10 + 4×3 = ?', answer: 52 },
+      { type: 'choice', q: 'Was ergibt 7 × (20 − 2)?', answer: '126', options: ['126', '140', '112', '130'] },
+      { type: 'number', q: 'a × (b + c) = a×b + a×c. Für a=5, b=4, c=6: a×(b+c) = ?', answer: 50 },
+      { type: 'choice', q: 'Vereinfache: 8 × 99 = 8 × (100 − ?)', answer: '1', options: ['1', '2', '10', '9'] },
+    ],
+    3: [
+      { type: 'number', q: '12 × 25 = 12 × (20 + 5) = 12×20 + 12×5 = ?', answer: 300 },
+      { type: 'choice', q: 'Was bedeutet "ausmultiplizieren"?', answer: 'Den Faktor vor der Klammer mit jedem Summanden multiplizieren', options: ['Den Faktor vor der Klammer mit jedem Summanden multiplizieren', 'Die Klammer weglassen', 'Die Klammer verschieben', 'Alle Zahlen addieren'] },
+      { type: 'number', q: 'Nutze das Distributivgesetz: 15 × 8 = 15 × (10 − 2) = ?', answer: 120 },
+      { type: 'number', q: '(a + b) × c = a×c + b×c. Für a=7, b=3, c=9: = ?', answer: 90 },
+      { type: 'choice', q: 'Welche ist die clevere Rechenstrategie für 5 × 18?', answer: '5 × (20 − 2) = 100 − 10 = 90', options: ['5 × (20 − 2) = 100 − 10 = 90', '5 × 18 direkt im Kopf', '(5 + 18) × 2 = 46', '18 + 5 = 23'] },
+    ]
+  },
+  vorrang: {
+    1: [
+      { type: 'number', q: '2 + 3 × 4 = ?', answer: 14 },
+      { type: 'choice', q: 'Was wird zuerst berechnet?\n(3 + 4) × 2', answer: '3 + 4 (Klammer zuerst!)', options: ['3 + 4 (Klammer zuerst!)', '4 × 2', '3 × 2', 'Alles gleichzeitig'] },
+      { type: 'number', q: '(2 + 3) × 4 = ?', answer: 20 },
+      { type: 'choice', q: 'Was ergibt 10 − 2 × 3?', answer: '4', options: ['4', '24', '14', '36'] },
+      { type: 'number', q: '6 ÷ 2 + 1 = ?', answer: 4 },
+    ],
+    2: [
+      { type: 'number', q: '4 + 6 × 2 − 3 = ?', answer: 13 },
+      { type: 'number', q: '(5 + 3) × (2 − 1) = ?', answer: 8 },
+      { type: 'choice', q: 'Was ergibt 3 × 4 + 2 × 5?', answer: '22', options: ['22', '70', '17', '30'] },
+      { type: 'number', q: '20 ÷ (2 + 3) = ?', answer: 4 },
+      { type: 'choice', q: 'Setze Klammern so, dass 2 + 3 × 4 = 20 wird', answer: '(2 + 3) × 4', options: ['(2 + 3) × 4', '2 + (3 × 4)', '2 × (3 + 4)', '(2 × 3) + 4'] },
+    ],
+    3: [
+      { type: 'number', q: '3 × (4 + 2) − 5 × (1 + 1) = ?', answer: 8 },
+      { type: 'number', q: '(10 − 4) ÷ 2 + 3 × 2 = ?', answer: 9 },
+      { type: 'choice', q: 'Was ergibt: 2 + 3 × 4 − 8 ÷ 2?', answer: '10', options: ['10', '8', '14', '16'] },
+      { type: 'number', q: '5 × (3 + 2 × 4) = ?', answer: 55 },
+      { type: 'choice', q: 'Welche Klammersetzung verändert den Wert von 8 − 2 + 4?', answer: '8 − (2 + 4) = 2', options: ['8 − (2 + 4) = 2', '(8 − 2) + 4 = 10', '8 − 2 + 4 = 10', '(8 + 4) − 2 = 10'] },
+    ]
+  }
+};
+
+const mixQuestions = {
+  1: [
+    { q: '5 + 3 = 3 + ?', answer: 5, type: 'number', law: '🔄 Kommutativ' },
+    { q: '(2 + 3) + 4 = 2 + (? + 4)', answer: 3, type: 'number', law: '🔗 Assoziativ' },
+    { q: '2 × (3 + 1) = ?', answer: 8, type: 'number', law: '📦 Distributiv' },
+    { q: '2 + 3 × 4 = ?', answer: 14, type: 'number', law: '🚦 Vorrang' },
+    { q: '7 × 4 = 4 × ?', answer: 7, type: 'number', law: '🔄 Kommutativ' },
+    { q: '(1 + 4) × 2 = ?', answer: 10, type: 'number', law: '🚦 Klammer zuerst' },
+  ],
+  2: [
+    { q: '34 + 66 = 66 + ?', answer: 34, type: 'number', law: '🔄 Kommutativ' },
+    { q: '(15 + 5) + 10 = 15 + (? + 10)', answer: 5, type: 'number', law: '🔗 Assoziativ' },
+    { q: '5 × (4 + 2) = ?', answer: 30, type: 'number', law: '📦 Distributiv' },
+    { q: '3 + 4 × 2 − 1 = ?', answer: 10, type: 'number', law: '🚦 Vorrang' },
+    { q: '8 × 9 = 9 × ?', answer: 8, type: 'number', law: '🔄 Kommutativ' },
+    { q: '(6 + 4) × 5 = ?', answer: 50, type: 'number', law: '🚦 Klammer zuerst' },
+  ],
+  3: [
+    { q: '(a+b)+(c) = a+(b+?), für b=12', answer: 12, type: 'number', law: '🔗 Assoziativ' },
+    { q: '7 × (10 + 3) = ?', answer: 91, type: 'number', law: '📦 Distributiv' },
+    { q: '4 × 3 + 2 × (5 − 1) = ?', answer: 20, type: 'number', law: '🚦 Vorrang' },
+    { q: '25 × 4 = 4 × ?', answer: 25, type: 'number', law: '🔄 Kommutativ' },
+    { q: '(3 + 7) × (2 + 3) = ?', answer: 50, type: 'number', law: '🚦 Klammer' },
+    { q: '9 × 99 = 9 × (100 − 1) = 900 − ? = ?', answer: 891, type: 'number', law: '📦 Distributiv' },
+  ]
+};
+
+// ============================================================
+// LEVEL & TAB MANAGEMENT
+// ============================================================
+
+function setLevel(l) {
+  currentLevel = l;
+  document.querySelectorAll('.level-btn').forEach((b, i) => {
+    b.classList.toggle('active', i + 1 === l);
+  });
+  renderAllExercises();
+  generateMixQuiz();
+}
+
+function showTab(name) {
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  const tabs = document.querySelectorAll('.tab-btn');
+  const tabMap = { kommutativ: 0, assoziativ: 1, distributiv: 2, vorrang: 3, mix: 4 };
+  tabs[tabMap[name]].classList.add('active');
+}
+
+// ============================================================
+// RENDER EXERCISES
+// ============================================================
+
+function renderAllExercises() {
+  renderExerciseGroup('komm', exercises.kommutativ[currentLevel], 'komm-exercises');
+  renderExerciseGroup('assoz', exercises.assoziativ[currentLevel], 'assoz-exercises');
+  renderExerciseGroup('dist', exercises.distributiv[currentLevel], 'dist-exercises');
+  renderExerciseGroup('vor', exercises.vorrang[currentLevel], 'vor-exercises');
+  scores = { komm: 0, assoz: 0, dist: 0, vor: 0, mix: 0 };
+  progress = { komm: 0, assoz: 0, dist: 0, vor: 0, mix: 0 };
+  updateProgress('komm', 5);
+  updateProgress('assoz', 5);
+  updateProgress('dist', 5);
+  updateProgress('vor', 5);
+  updateScoreDisplay('komm');
+  updateScoreDisplay('assoz');
+  updateScoreDisplay('dist');
+  updateScoreDisplay('vor');
+}
+
+function renderExerciseGroup(key, items, containerId) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  items.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'exercise-card';
+    card.id = `${key}-q${idx}`;
+
+    const qEl = document.createElement('div');
+    qEl.className = 'exercise-q';
+    qEl.innerHTML = item.q.replace(/\n/g, '<br>');
+    card.appendChild(qEl);
+
+    if (item.type === 'choice') {
+      const grid = document.createElement('div');
+      grid.className = 'options-grid';
+      item.options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.className = 'option-btn';
+        btn.textContent = opt;
+        btn.onclick = () => handleChoice(key, idx, opt, item.answer, btn, grid, card);
+        grid.appendChild(btn);
+      });
+      card.appendChild(grid);
+    } else {
+      const row = document.createElement('div');
+      row.className = 'number-input-row';
+      const inp = document.createElement('input');
+      inp.type = 'number';
+      inp.className = 'num-input';
+      inp.placeholder = '?';
+      inp.inputMode = 'numeric';
+      inp.id = `inp-${key}-${idx}`;
+      inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') checkNum(key, idx, item.answer, card); });
+      const btn = document.createElement('button');
+      btn.className = 'check-btn';
+      btn.textContent = '✓';
+      btn.onclick = () => checkNum(key, idx, item.answer, card);
+      row.appendChild(inp);
+      row.appendChild(btn);
+      card.appendChild(row);
+    }
+
+    const fb = document.createElement('div');
+    fb.className = 'feedback';
+    fb.id = `fb-${key}-${idx}`;
+    card.appendChild(fb);
+
+    container.appendChild(card);
+  });
+}
+
+function handleChoice(key, idx, chosen, correct, btn, grid, card) {
+  const btns = grid.querySelectorAll('.option-btn');
+  btns.forEach(b => { b.disabled = true; });
+  const fb = document.getElementById(`fb-${key}-${idx}`);
+
+  if (chosen === correct) {
+    btn.classList.add('selected-correct');
+    card.classList.add('correct');
+    fb.className = 'feedback show correct-fb';
+    fb.innerHTML = '🎉 Richtig! Super!';
+    markProgress(key, idx);
+  } else {
+    btn.classList.add('selected-wrong');
+    card.classList.add('wrong');
+    btns.forEach(b => { if (b.textContent === correct) b.classList.add('show-correct'); });
+    fb.className = 'feedback show wrong-fb';
+    fb.innerHTML = `❌ Nicht ganz. Richtig: <strong>${correct}</strong>`;
+    markProgress(key, idx, false);
+  }
+}
+
+function checkNum(key, idx, correct, card) {
+  const inp = document.getElementById(`inp-${key}-${idx}`);
+  const val = parseFloat(inp.value);
+  const fb = document.getElementById(`fb-${key}-${idx}`);
+  inp.disabled = true;
+  card.querySelector('.check-btn').disabled = true;
+
+  if (val === correct) {
+    card.classList.add('correct');
+    fb.className = 'feedback show correct-fb';
+    fb.innerHTML = '🎉 Richtig! Super!';
+    markProgress(key, idx);
+  } else {
+    card.classList.add('wrong');
+    fb.className = 'feedback show wrong-fb';
+    fb.innerHTML = `❌ Nicht ganz. Richtig wäre: <strong>${correct}</strong>`;
+    markProgress(key, idx, false);
+  }
+}
+
+function markProgress(key, idx, correct = true) {
+  progress[key]++;
+  if (correct) {
+    scores[key]++;
+    updateScoreDisplay(key);
+  }
+  updateProgress(key, 5);
+  const total = exercises[Object.keys({ kommutativ: 'komm', assoziativ: 'assoz', distributiv: 'dist', vorrang: 'vor' }).find(k => ({ kommutativ: 'komm', assoziativ: 'assoz', distributiv: 'dist', vorrang: 'vor' })[k] === key) + ''] || 5;
+  if (progress[key] === 5 && scores[key] >= 4) {
+    setTimeout(() => showCelebration(key), 600);
+  }
+}
+
+function updateProgress(key, total) {
+  const pct = Math.round((progress[key] / total) * 100);
+  const bar = document.getElementById(`${key}-progress`);
+  const txt = document.getElementById(`${key}-prog-text`);
+  if (bar) bar.style.width = pct + '%';
+  if (txt) txt.textContent = `${progress[key]} / ${total}`;
+}
+
+function updateScoreDisplay(key) {
+  const el = document.getElementById(`${key}-score`);
+  if (el) el.textContent = scores[key];
+}
+
+// ============================================================
+// MIX QUIZ
+// ============================================================
+let mixAnswered = 0;
+
+function generateMixQuiz() {
+  const qs = mixQuestions[currentLevel];
+  const area = document.getElementById('mix-quiz-area');
+  area.innerHTML = '';
+  mixAnswered = 0;
+  scores.mix = 0;
+  progress.mix = 0;
+  updateProgress('mix', qs.length);
+  document.getElementById('mix-prog-text').textContent = `0 / ${qs.length}`;
+
+  qs.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'exercise-card';
+
+    const badge = document.createElement('div');
+    badge.style.cssText = 'font-size:12px;font-weight:800;color:var(--purple);margin-bottom:8px;';
+    badge.textContent = item.law;
+    card.appendChild(badge);
+
+    const qEl = document.createElement('div');
+    qEl.className = 'exercise-q';
+    qEl.textContent = item.q;
+    card.appendChild(qEl);
+
+    const row = document.createElement('div');
+    row.className = 'number-input-row';
+    const inp = document.createElement('input');
+    inp.type = 'number';
+    inp.className = 'num-input';
+    inp.placeholder = '?';
+    inp.inputMode = 'numeric';
+    inp.id = `mix-inp-${idx}`;
+    const btn = document.createElement('button');
+    btn.className = 'check-btn';
+    btn.textContent = '✓';
+    btn.onclick = () => checkMixNum(idx, item.answer, card, qs.length);
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') checkMixNum(idx, item.answer, card, qs.length); });
+    row.appendChild(inp);
+    row.appendChild(btn);
+    card.appendChild(row);
+
+    const fb = document.createElement('div');
+    fb.className = 'feedback';
+    fb.id = `fb-mix-${idx}`;
+    card.appendChild(fb);
+
+    area.appendChild(card);
+  });
+}
+
+function checkMixNum(idx, correct, card, total) {
+  const inp = document.getElementById(`mix-inp-${idx}`);
+  const val = parseFloat(inp.value);
+  const fb = document.getElementById(`fb-mix-${idx}`);
+  if (inp.disabled) return;
+  inp.disabled = true;
+  card.querySelector('.check-btn').disabled = true;
+  mixAnswered++;
+  progress.mix++;
+
+  if (val === correct) {
+    scores.mix++;
+    card.classList.add('correct');
+    fb.className = 'feedback show correct-fb';
+    fb.innerHTML = '🎉 Richtig!';
+  } else {
+    card.classList.add('wrong');
+    fb.className = 'feedback show wrong-fb';
+    fb.innerHTML = `❌ Richtig wäre: <strong>${correct}</strong>`;
+  }
+
+  const pct = Math.round((progress.mix / total) * 100);
+  document.getElementById('mix-progress').style.width = pct + '%';
+  document.getElementById('mix-prog-text').textContent = `${progress.mix} / ${total}`;
+
+  if (mixAnswered === total && scores.mix >= total - 1) {
+    setTimeout(() => showCelebration('mix'), 600);
+  }
+}
+
+// ============================================================
+// CELEBRATION
+// ============================================================
+
+function showCelebration(key) {
+  const msgs = {
+    komm: 'Du hast das Kommutativgesetz gemeistert! 🔄',
+    assoz: 'Das Assoziativgesetz sitzt! Klasse! 🔗',
+    dist: 'Distributivgesetz-Profi! Fantastisch! 📦',
+    vor: 'Du kennst die Vorrangsregeln auswendig! 🚦',
+    mix: 'Mix-Champion! Du beherrschst alle Gesetze! 🏆'
+  };
+  const titles = {
+    komm: 'Kommutativ gemeistert!',
+    assoz: 'Assoziativ gemeistert!',
+    dist: 'Distributiv gemeistert!',
+    vor: 'Vorrang gemeistert!',
+    mix: 'Mix-Quiz bestanden!'
+  };
+  const emojis = { komm: '🔄', assoz: '🔗', dist: '📦', vor: '🚦', mix: '🏆' };
+
+  const score = scores[key];
+  let stars = score >= 5 ? '⭐⭐⭐' : score >= 4 ? '⭐⭐' : '⭐';
+
+  document.getElementById('celeb-emoji').textContent = emojis[key];
+  document.getElementById('celeb-title').textContent = titles[key];
+  document.getElementById('celeb-msg').textContent = msgs[key];
+  document.getElementById('celeb-stars').textContent = stars;
+  document.getElementById('celebration').classList.add('show');
+  launchConfetti();
+}
+
+function closeCelebration() {
+  document.getElementById('celebration').classList.remove('show');
+}
+
+// ============================================================
+// CONFETTI
+// ============================================================
+
+function launchConfetti() {
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const particles = [];
+  const colors = ['#4f46e5', '#ec4899', '#f59e0b', '#10b981', '#06b6d4', '#8b5cf6'];
+
+  for (let i = 0; i < 120; i++) {
+    particles.push({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height - canvas.height,
+      r: Math.random() * 8 + 4,
+      d: Math.random() * 120 + 40,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      tilt: Math.random() * 10 - 10,
+      tiltAngle: 0,
+      tiltAngleIncrement: Math.random() * 0.07 + 0.05
+    });
+  }
+
+  let frame = 0;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    particles.forEach(p => {
+      p.tiltAngle += p.tiltAngleIncrement;
+      p.y += (Math.cos(frame / 10 + p.d) + 2) * 2;
+      p.tilt = Math.sin(p.tiltAngle) * 15;
+      ctx.beginPath();
+      ctx.fillStyle = p.color;
+      ctx.ellipse(p.x, p.y, p.r, p.r / 2, p.tilt * Math.PI / 180, 0, 2 * Math.PI);
+      ctx.fill();
+    });
+    frame++;
+    if (frame < 120) requestAnimationFrame(draw);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  draw();
+}
+
+// ============================================================
+// ANIMATIONS
+// ============================================================
+
+function animateKommutativ() {
+  const blocks = document.getElementById('komm-blocks');
+  blocks.style.transform = 'scale(0.95)';
+  setTimeout(() => { blocks.style.transform = 'scale(1)'; }, 200);
+
+  const allBlocks = blocks.querySelectorAll('.block');
+  allBlocks.forEach(b => {
+    b.style.transition = 'transform 0.4s';
+    b.style.transform = 'rotate(180deg)';
+    setTimeout(() => b.style.transform = 'rotate(360deg)', 300);
+  });
+}
+
+function toggleDistDemo() {
+  distDemoToggled = !distDemoToggled;
+  const el = document.getElementById('dist-demo-1');
+  if (distDemoToggled) {
+    el.innerHTML = `
+      <div class="calc-step" style="border-color:#ec4899;text-align:left;">
+        <div class="step-num" style="color:#ec4899;">📦 Klammer ausrechnen</div>
+        3 × (4 + 2) = 3 × <strong>6</strong>
+      </div>
+      <div class="calc-step" style="border-color:#10b981;text-align:left;">
+        <div class="step-num" style="color:#10b981;">✓ Ergebnis</div>
+        3 × 6 = <strong style="font-size:24px;color:#10b981;">18</strong>
+      </div>
+      <div style="margin-top:8px;font-size:15px;font-weight:700;">
+        Oder: <span style="color:#4f46e5;">3×4 + 3×2 = 12 + 6 = 18</span> ✓
+      </div>
+    `;
+  } else {
+    el.innerHTML = `
+      <div class="blocks-row">
+        <div class="block pink">📦</div>
+        <div class="block pink">📦</div>
+        <div class="block pink">📦</div>
+      </div>
+      <div style="font-size:14px;font-weight:700;margin-top:6px;">Jeder Sack hat: 🍎🍎🍎🍎 + 🍊🍊</div>
+      <div class="demo-equation" style="font-size:20px;">3 × (4 + 2) = ?</div>
+    `;
+  }
+}
+
+// ============================================================
+// INIT
+// ============================================================
+
+renderAllExercises();
+generateMixQuiz();
+</script>
+
+</body>
+</html>
